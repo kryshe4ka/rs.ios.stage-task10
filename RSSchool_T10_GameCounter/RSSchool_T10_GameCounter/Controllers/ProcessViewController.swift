@@ -25,12 +25,9 @@ class ProcessViewController: UIViewController {
         return button
     }()
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var titleLabel: TitleLabel = {
+        let label = TitleLabel()
         label.text = "Game"
-        label.font = UIFont(name: "Nunito-ExtraBold", size: 36)
-        label.textColor = .white
         return label
     }()
     
@@ -164,8 +161,17 @@ class ProcessViewController: UIViewController {
     private lazy var diceView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "dice_1")
         return imageView
+    }()
+    
+    private lazy var newGameViewConroller: NewGameViewController = {
+        let controller = NewGameViewController()
+        return controller
+    }()
+    
+    private lazy var resultsViewConroller: ResultsViewConroller = {
+        let controller = ResultsViewConroller()
+        return controller
     }()
 
     override func viewDidLoad() {
@@ -250,11 +256,12 @@ class ProcessViewController: UIViewController {
     }
     
     @objc func newGameAction(_ sender: ActionButton) {
-        
+        present(newGameViewConroller, animated: true, completion: nil)
     }
     @objc func resultsAction(_ sender: ActionButton) {
-        
+        present(resultsViewConroller, animated: true, completion: nil)
     }
+    
     @objc func diceAction(_ sender: ActionButton) {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -265,9 +272,10 @@ class ProcessViewController: UIViewController {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
         
+        // roll the dice
         diceView.image = UIImage(named: "dice_\(Int.random(in: 1..<7))")
         
-        // add CATransaction to delay animation
+        // using CATransaction to delay animation
         CATransaction.begin()
         view.addSubview(diceView)
         NSLayoutConstraint.activate([
@@ -286,7 +294,7 @@ class ProcessViewController: UIViewController {
     @objc func closeDiceView(_ sender: UIGestureRecognizer) {
         for subview in view.subviews {
             if subview is UIVisualEffectView {
-                subview.removeFromSuperview()
+                subview.removeFromSuperview() // to remove blur
             }
         }
         diceView.removeFromSuperview()

@@ -1,13 +1,13 @@
 //
-//  ActionButton.swift
+//  TitleLabel.swift
 //  RSSchool_T10_GameCounter
 //
-//  Created by Liza Kryshkovskaya on 25.08.21.
+//  Created by Liza Kryshkovskaya on 26.08.21.
 //
 
 import UIKit
 
-class ActionButton: UIButton {
+class TitleLabel: UILabel {
 
     init() {
         super.init(frame: .zero)
@@ -20,9 +20,11 @@ class ActionButton: UIButton {
     }
     
     func setup() {
-        setTitleColor(UIColor(named: "CustomGreen"), for: .normal)
-        titleLabel?.font = UIFont(name: "Nunito-ExtraBold", size: 17)
+        font = UIFont(name: "Nunito-ExtraBold", size: 36)
+        textColor = .white
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
+    
 
 }

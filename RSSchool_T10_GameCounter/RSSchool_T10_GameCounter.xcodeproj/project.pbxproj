@@ -28,6 +28,14 @@
 		3D0208E726D6881F006CFCA9 /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D0208D926D6881F006CFCA9 /* Nunito-Bold.ttf */; };
 		3D0208EB26D6D735006CFCA9 /* PointButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208EA26D6D735006CFCA9 /* PointButton.swift */; };
 		3D0208EF26D785E9006CFCA9 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208EE26D785E9006CFCA9 /* Animation.swift */; };
+		3D0208F126D7C179006CFCA9 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208F026D7C179006CFCA9 /* NewGameViewController.swift */; };
+		3D0208F326D7C2D6006CFCA9 /* ResultsViewConroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208F226D7C2D6006CFCA9 /* ResultsViewConroller.swift */; };
+		3D0208F526D7C9DF006CFCA9 /* TitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208F426D7C9DF006CFCA9 /* TitleLabel.swift */; };
+		3D0208F726D8F2B7006CFCA9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208F626D8F2B7006CFCA9 /* Player.swift */; };
+		3D0208F926D8F482006CFCA9 /* CustomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208F826D8F482006CFCA9 /* CustomHeader.swift */; };
+		3D0208FB26D9005B006CFCA9 /* CustomFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208FA26D9005B006CFCA9 /* CustomFooter.swift */; };
+		3D0208FD26D90CED006CFCA9 /* PlayerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208FC26D90CED006CFCA9 /* PlayerTableViewCell.swift */; };
+		3D0208FF26D96A71006CFCA9 /* AddPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208FE26D96A71006CFCA9 /* AddPlayerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +62,14 @@
 		3D0208D926D6881F006CFCA9 /* Nunito-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Bold.ttf"; sourceTree = "<group>"; };
 		3D0208EA26D6D735006CFCA9 /* PointButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointButton.swift; sourceTree = "<group>"; };
 		3D0208EE26D785E9006CFCA9 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
+		3D0208F026D7C179006CFCA9 /* NewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
+		3D0208F226D7C2D6006CFCA9 /* ResultsViewConroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewConroller.swift; sourceTree = "<group>"; };
+		3D0208F426D7C9DF006CFCA9 /* TitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
+		3D0208F626D8F2B7006CFCA9 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		3D0208F826D8F482006CFCA9 /* CustomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeader.swift; sourceTree = "<group>"; };
+		3D0208FA26D9005B006CFCA9 /* CustomFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFooter.swift; sourceTree = "<group>"; };
+		3D0208FC26D90CED006CFCA9 /* PlayerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTableViewCell.swift; sourceTree = "<group>"; };
+		3D0208FE26D96A71006CFCA9 /* AddPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +145,12 @@
 		3D0208E826D6AF0E006CFCA9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3D0208FC26D90CED006CFCA9 /* PlayerTableViewCell.swift */,
+				3D0208F826D8F482006CFCA9 /* CustomHeader.swift */,
+				3D0208FA26D9005B006CFCA9 /* CustomFooter.swift */,
+				3D0208F626D8F2B7006CFCA9 /* Player.swift */,
 				3D0208C926D685CB006CFCA9 /* ActionButton.swift */,
+				3D0208F426D7C9DF006CFCA9 /* TitleLabel.swift */,
 				3D0208EE26D785E9006CFCA9 /* Animation.swift */,
 				3D0208EA26D6D735006CFCA9 /* PointButton.swift */,
 			);
@@ -140,6 +161,9 @@
 			isa = PBXGroup;
 			children = (
 				3D0208C726D68286006CFCA9 /* ProcessViewController.swift */,
+				3D0208F226D7C2D6006CFCA9 /* ResultsViewConroller.swift */,
+				3D0208F026D7C179006CFCA9 /* NewGameViewController.swift */,
+				3D0208FE26D96A71006CFCA9 /* AddPlayerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -227,11 +251,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D0208FD26D90CED006CFCA9 /* PlayerTableViewCell.swift in Sources */,
 				3D0208B326D67D32006CFCA9 /* AppDelegate.swift in Sources */,
+				3D0208FB26D9005B006CFCA9 /* CustomFooter.swift in Sources */,
 				3D0208C826D68286006CFCA9 /* ProcessViewController.swift in Sources */,
 				3D0208EB26D6D735006CFCA9 /* PointButton.swift in Sources */,
+				3D0208FF26D96A71006CFCA9 /* AddPlayerViewController.swift in Sources */,
+				3D0208F326D7C2D6006CFCA9 /* ResultsViewConroller.swift in Sources */,
 				3D0208EF26D785E9006CFCA9 /* Animation.swift in Sources */,
+				3D0208F526D7C9DF006CFCA9 /* TitleLabel.swift in Sources */,
 				3D0208CA26D685CB006CFCA9 /* ActionButton.swift in Sources */,
+				3D0208F726D8F2B7006CFCA9 /* Player.swift in Sources */,
+				3D0208F126D7C179006CFCA9 /* NewGameViewController.swift in Sources */,
+				3D0208F926D8F482006CFCA9 /* CustomHeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
