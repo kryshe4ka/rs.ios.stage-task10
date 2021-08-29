@@ -45,7 +45,7 @@ class CarouselView: UIView, UICollectionViewDelegateFlowLayout {
     private var pages: Int
     private var delegate: CarouselViewDelegate?
     private var carouselData = [CarouselData]()
-    private var currentPage = 0 {
+    var currentPage = 0 {
         didSet {
             pageControl.currentPage = currentPage
             delegate?.currentPageDidChange(to: currentPage)

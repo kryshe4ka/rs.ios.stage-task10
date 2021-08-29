@@ -109,7 +109,7 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
     // Create a custom footer
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SectionFooter") as! CustomFooter
-        view.title.text = "Add player"
+       // view.title.text = "Add player"
         view.addButton.addTarget(self, action: #selector(addPlayer(_:)), for: .touchUpInside)
         return view
     }

@@ -92,12 +92,8 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
     private lazy var previousButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        if #available(iOS 13.0, *) {
-            //button.setImage(UIImage(systemName: "arrow.left.to.line.alt"), for: .normal)
-            button.setBackgroundImage(UIImage(systemName: "arrow.left.to.line"), for: .normal)
-        } else {
-            // Fallback on earlier versions
-        }
+        button.setBackgroundImage(UIImage(named: "icon_Next-2"), for: .normal)
+
         button.tintColor = UIColor(named: "CustomOrange")
         button.addTarget(self, action: #selector(previousPage(_:)), for: .touchUpInside)
         return button
@@ -106,11 +102,7 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
     private lazy var nextButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        if #available(iOS 13.0, *) {
-            button.setBackgroundImage(UIImage(systemName: "arrow.right.to.line"), for: .normal)
-        } else {
-            // Fallback on earlier versions
-        }
+        button.setBackgroundImage(UIImage(named: "icon_Next"), for: .normal)
         button.tintColor = UIColor(named: "CustomOrange")
         button.addTarget(self, action: #selector(nextPage(_:)), for: .touchUpInside)
         return button
@@ -197,7 +189,6 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
     private var carouselData = [CarouselView.CarouselData]()
     
     @objc func changePoints(_ sender: PointButton) {
-        
         if playersArray.count != 0 {
             guard let curentPage = carouselView?.getCurentPage() else {
                 return
@@ -205,24 +196,50 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
             playersArray[curentPage].score += sender.tag
             carouselView?.changePoints(player: curentPage, points: playersArray[curentPage].score)
             carouselView?.nextPage()
+            setImageForArrowsButtons()
         }
     }
     
     @objc func nextPage(_ sender: UIButton) {
         if playersArray.count != 0 {
             carouselView?.nextPage()
+            setImageForArrowsButtons()
         }
+    }
+    
+    func setImageForArrowsButtons() {        
+        if (playersArray.count == 1) {
+            nextButton.setBackgroundImage(UIImage(named: "icon_Previous-2"), for: .normal)
+            previousButton.setBackgroundImage(UIImage(named: "icon_Previous"), for: .normal)
+        } else {
+            if (carouselView!.currentPage == playersArray.count - 2) ||  (carouselView!.currentPage == -1) {
+                nextButton.setBackgroundImage(UIImage(named: "icon_Previous-2"), for: .normal)
+            } else {
+                nextButton.setBackgroundImage(UIImage(named: "icon_Next"), for: .normal)
+            }
+            if (carouselView!.currentPage == playersArray.count - 1) {
+                previousButton.setBackgroundImage(UIImage(named: "icon_Previous"), for: .normal)
+            } else {
+                previousButton.setBackgroundImage(UIImage(named: "icon_Next-2"), for: .normal)
+            }
+        }
+        
+        
     }
     
     @objc func previousPage(_ sender: UIButton) {
         if playersArray.count != 0 {
             carouselView?.previousPage()
+            setImageForArrowsButtons()
         }
     }
+    
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         carouselView?.configureView(with: carouselData)
+        configureArrowsButtons()
     }
     
     override func viewDidLoad() {
@@ -318,6 +335,8 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
         carouselView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         carouselView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         carouselView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        configureArrowsButtons()
     }
     
     func setPlayers(players: [Player]) {
@@ -330,7 +349,19 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
             carouselData.append(.init(name: player.name))
         }
         carouselView?.configureView(with: carouselData)
-}
+        configureArrowsButtons()
+    }
+    
+    func configureArrowsButtons() {
+        if playersArray.count <= 1 {
+            previousButton.setBackgroundImage(UIImage(named: "icon_Previous"), for: .normal)
+            nextButton.setBackgroundImage(UIImage(named: "icon_Previous-2"), for: .normal)
+        } else {
+            previousButton.setBackgroundImage(UIImage(named: "icon_Previous"), for: .normal)
+            nextButton.setBackgroundImage(UIImage(named: "icon_Next"), for: .normal)
+        }
+        
+    }
     
     @objc func newGameAction(_ sender: ActionButton) {
         present(newGameViewConroller, animated: true, completion: nil)
