@@ -36,6 +36,8 @@
 		3D0208FB26D9005B006CFCA9 /* CustomFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208FA26D9005B006CFCA9 /* CustomFooter.swift */; };
 		3D0208FD26D90CED006CFCA9 /* PlayerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208FC26D90CED006CFCA9 /* PlayerTableViewCell.swift */; };
 		3D0208FF26D96A71006CFCA9 /* AddPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0208FE26D96A71006CFCA9 /* AddPlayerViewController.swift */; };
+		3D02090126DA522C006CFCA9 /* CarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D02090026DA522C006CFCA9 /* CarouselCell.swift */; };
+		3D02090326DA8835006CFCA9 /* CarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D02090226DA8835006CFCA9 /* CarouselView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +72,8 @@
 		3D0208FA26D9005B006CFCA9 /* CustomFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFooter.swift; sourceTree = "<group>"; };
 		3D0208FC26D90CED006CFCA9 /* PlayerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTableViewCell.swift; sourceTree = "<group>"; };
 		3D0208FE26D96A71006CFCA9 /* AddPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerViewController.swift; sourceTree = "<group>"; };
+		3D02090026DA522C006CFCA9 /* CarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCell.swift; sourceTree = "<group>"; };
+		3D02090226DA8835006CFCA9 /* CarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +149,8 @@
 		3D0208E826D6AF0E006CFCA9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3D02090026DA522C006CFCA9 /* CarouselCell.swift */,
+				3D02090226DA8835006CFCA9 /* CarouselView.swift */,
 				3D0208FC26D90CED006CFCA9 /* PlayerTableViewCell.swift */,
 				3D0208F826D8F482006CFCA9 /* CustomHeader.swift */,
 				3D0208FA26D9005B006CFCA9 /* CustomFooter.swift */,
@@ -261,7 +267,9 @@
 				3D0208EF26D785E9006CFCA9 /* Animation.swift in Sources */,
 				3D0208F526D7C9DF006CFCA9 /* TitleLabel.swift in Sources */,
 				3D0208CA26D685CB006CFCA9 /* ActionButton.swift in Sources */,
+				3D02090326DA8835006CFCA9 /* CarouselView.swift in Sources */,
 				3D0208F726D8F2B7006CFCA9 /* Player.swift in Sources */,
+				3D02090126DA522C006CFCA9 /* CarouselCell.swift in Sources */,
 				3D0208F126D7C179006CFCA9 /* NewGameViewController.swift in Sources */,
 				3D0208F926D8F482006CFCA9 /* CustomHeader.swift in Sources */,
 			);

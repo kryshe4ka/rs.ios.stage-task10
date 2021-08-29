@@ -7,7 +7,13 @@
 
 import UIKit
 
-class ProcessViewController: UIViewController {
+protocol NewGameViewControllerDelegate {
+    func setPlayers(players: [Player])
+}
+class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
+    
+
+    var playersArray: [Player] = []
     
     private lazy var newGameButton: ActionButton = {
         let button = ActionButton()
@@ -63,15 +69,14 @@ class ProcessViewController: UIViewController {
         return button
     }()
     
-    private lazy var miniBarLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "K J B"
-        label.font = UIFont(name: "Nunito-ExtraBold", size: 20)
-//        label.textColor = UIColor(named: "MiniBarActiveColor")
-        label.textColor = UIColor(named: "CustomGray")
-        return label
-    }()
+//    private lazy var miniBarLabel: UILabel = {
+//        let label = UILabel()
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.text = "K J B"
+//        label.font = UIFont(name: "Nunito-ExtraBold", size: 20)
+//        label.textColor = UIColor(named: "CustomGray")
+//        return label
+//    }()
     
     private lazy var plusOnePointButton: PointButton = {
         let button = PointButton()
@@ -79,6 +84,8 @@ class ProcessViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "Nunito-ExtraBold", size: 40)
         button.layer.cornerRadius = 45
         button.setTitle("+1", for: .normal)
+        button.tag = 1
+        button.addTarget(self, action: #selector(changePoints(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -92,6 +99,7 @@ class ProcessViewController: UIViewController {
             // Fallback on earlier versions
         }
         button.tintColor = UIColor(named: "CustomOrange")
+        button.addTarget(self, action: #selector(previousPage(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -104,6 +112,7 @@ class ProcessViewController: UIViewController {
             // Fallback on earlier versions
         }
         button.tintColor = UIColor(named: "CustomOrange")
+        button.addTarget(self, action: #selector(nextPage(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -122,6 +131,8 @@ class ProcessViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "Nunito-ExtraBold", size: 25)
         button.layer.cornerRadius = 27.5
         button.setTitle("+5", for: .normal)
+        button.tag = 5
+        button.addTarget(self, action: #selector(changePoints(_:)), for: .touchUpInside)
         return button
     }()
     private lazy var plusTenPointButton: PointButton = {
@@ -130,6 +141,8 @@ class ProcessViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "Nunito-ExtraBold", size: 25)
         button.layer.cornerRadius = 27.5
         button.setTitle("+10", for: .normal)
+        button.tag = 10
+        button.addTarget(self, action: #selector(changePoints(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -139,6 +152,8 @@ class ProcessViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "Nunito-ExtraBold", size: 25)
         button.layer.cornerRadius = 27.5
         button.setTitle("-5", for: .normal)
+        button.tag = -5
+        button.addTarget(self, action: #selector(changePoints(_:)), for: .touchUpInside)
         return button
     }()
     private lazy var minusOnePointButton: PointButton = {
@@ -147,6 +162,8 @@ class ProcessViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "Nunito-ExtraBold", size: 25)
         button.layer.cornerRadius = 27.5
         button.setTitle("-1", for: .normal)
+        button.tag = -1
+        button.addTarget(self, action: #selector(changePoints(_:)), for: .touchUpInside)
         return button
     }()
     private lazy var minusTenPointButton: PointButton = {
@@ -155,6 +172,8 @@ class ProcessViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "Nunito-ExtraBold", size: 25)
         button.layer.cornerRadius = 27.5
         button.setTitle("-10", for: .normal)
+        button.tag = -10
+        button.addTarget(self, action: #selector(changePoints(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -174,15 +193,54 @@ class ProcessViewController: UIViewController {
         return controller
     }()
 
+    private var carouselView:  CarouselView?
+    private var carouselData = [CarouselView.CarouselData]()
+    
+    @objc func changePoints(_ sender: PointButton) {
+        
+        if playersArray.count != 0 {
+            guard let curentPage = carouselView?.getCurentPage() else {
+                return
+            }
+            playersArray[curentPage].score += sender.tag
+            carouselView?.changePoints(player: curentPage, points: playersArray[curentPage].score)
+            carouselView?.nextPage()
+        }
+    }
+    
+    @objc func nextPage(_ sender: UIButton) {
+        if playersArray.count != 0 {
+            carouselView?.nextPage()
+        }
+    }
+    
+    @objc func previousPage(_ sender: UIButton) {
+        if playersArray.count != 0 {
+            carouselView?.previousPage()
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        carouselView?.configureView(with: carouselData)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        newGameViewConroller.delegate = self
+        
+        carouselView = CarouselView(pages: 0, delegate: self)
+        guard let carouselView = carouselView else { return }
+        view.addSubview(carouselView)
+        
         view.backgroundColor = UIColor(named: "BG")
         let pointButtonsArray = [minusTenPointButton, minusFivePointButton, minusOnePointButton, plusFivePointButton, plusTenPointButton]
         for itemButton in pointButtonsArray {
             pointsStackView.addArrangedSubview(itemButton)
         }
         
-        let viewsArray = [newGameButton, resultsButton, titleLabel, diceButton, timerLabel, timerButton, undoButton, miniBarLabel, plusOnePointButton, previousButton, nextButton, pointsStackView, pointsStackView]
+        let viewsArray = [newGameButton, resultsButton, titleLabel, diceButton, timerLabel, timerButton, undoButton, plusOnePointButton, previousButton, nextButton, pointsStackView, pointsStackView]
         for itemView in viewsArray {
             view.addSubview(itemView)
         }
@@ -206,7 +264,7 @@ class ProcessViewController: UIViewController {
             diceButton.widthAnchor.constraint(equalToConstant: 36.0),
             diceButton.heightAnchor.constraint(equalToConstant: 36.0),
             
-            timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 116),
+            timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
             timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             timerButton.leadingAnchor.constraint(equalTo: timerLabel.trailingAnchor, constant: 20.0),
@@ -214,13 +272,13 @@ class ProcessViewController: UIViewController {
             timerButton.widthAnchor.constraint(equalToConstant: 16.0),
             timerButton.centerYAnchor.constraint(equalTo: timerLabel.centerYAnchor),
             
-            undoButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
+            undoButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
             undoButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40.0),
             
-            miniBarLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            miniBarLabel.centerYAnchor.constraint(equalTo: undoButton.centerYAnchor),
+//            miniBarLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            miniBarLabel.centerYAnchor.constraint(equalTo: undoButton.centerYAnchor),
             
-            plusOnePointButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -151.0),
+            plusOnePointButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -131.0),
             plusOnePointButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             plusOnePointButton.heightAnchor.constraint(equalToConstant: 90.0),
             plusOnePointButton.widthAnchor.constraint(equalToConstant: 90.0),
@@ -237,7 +295,7 @@ class ProcessViewController: UIViewController {
             
             pointsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20.0),
             pointsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20.0),
-            pointsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -74.0),
+            pointsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -54.0),
             pointsStackView.heightAnchor.constraint(equalToConstant: 55.0),
             
             minusTenPointButton.heightAnchor.constraint(equalToConstant: 55.0),
@@ -252,8 +310,27 @@ class ProcessViewController: UIViewController {
             plusTenPointButton.widthAnchor.constraint(equalToConstant: 55.0),
             
         ])
-
+        
+        
+        // Set up constraints for the carousel view
+        carouselView.translatesAutoresizingMaskIntoConstraints = false
+        carouselView.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 42).isActive = true
+        carouselView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        carouselView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        carouselView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
+    
+    func setPlayers(players: [Player]) {
+        playersArray = players
+        
+        carouselData.removeAll()
+        carouselView?.setPages(pages: playersArray.count)
+        
+        for player in playersArray {
+            carouselData.append(.init(name: player.name))
+        }
+        carouselView?.configureView(with: carouselData)
+}
     
     @objc func newGameAction(_ sender: ActionButton) {
         present(newGameViewConroller, animated: true, completion: nil)
@@ -299,6 +376,14 @@ class ProcessViewController: UIViewController {
         }
         diceView.removeFromSuperview()
     }
+}
 
 
+// MARK: - CarouselViewDelegate
+extension ProcessViewController: CarouselViewDelegate {
+    func currentPageDidChange(to page: Int) {
+        UIView.animate(withDuration: 0.7) {
+            
+        }
+    }
 }

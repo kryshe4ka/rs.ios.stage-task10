@@ -40,6 +40,7 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
         button.titleLabel?.layer.masksToBounds = false
         button.titleLabel?.layer.shadowOpacity = 1.0
         button.titleLabel?.layer.shadowColor = UIColor(named: "ShadowColor")?.cgColor
+        button.addTarget(self, action: #selector(startGame(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -51,6 +52,7 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
         return table
     }()
     
+    var delegate: NewGameViewControllerDelegate?
     var playersArray: [Player] = []
     var heightConstraint = NSLayoutConstraint()
     
@@ -92,6 +94,7 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
             startButton.heightAnchor.constraint(equalToConstant: 65.0),
         ])
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return playersArray.count
     }
@@ -173,6 +176,16 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     @objc func cancelAction(_ sender: ActionButton) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func startGame(_ sender: UIButton) {
+        if playersArray.count != 0 {
+            delegate?.setPlayers(players: playersArray)
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            // unactive button
+        }
+        
     }
     
     
