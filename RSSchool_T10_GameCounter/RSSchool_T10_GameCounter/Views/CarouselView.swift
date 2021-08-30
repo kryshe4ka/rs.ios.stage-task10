@@ -15,8 +15,7 @@ class CarouselView: UIView, UICollectionViewDelegateFlowLayout {
 
     struct CarouselData {
         let name: String
-        var points: Int?
-        var rank = 0
+        var points = 0
     }
         
     // MARK: - Subviews
@@ -44,7 +43,7 @@ class CarouselView: UIView, UICollectionViewDelegateFlowLayout {
         
     private var pages: Int
     private var delegate: CarouselViewDelegate?
-    private var carouselData = [CarouselData]()
+    var carouselData = [CarouselData]()
     var currentPage = 0 {
         didSet {
             pageControl.currentPage = currentPage
@@ -56,7 +55,6 @@ class CarouselView: UIView, UICollectionViewDelegateFlowLayout {
         self.pages = pages
         self.delegate = delegate
         super.init(frame: .zero)
-        
         backgroundColor = .clear
         setupCollectionView()
         setupPageControl()
@@ -96,7 +94,6 @@ class CarouselView: UIView, UICollectionViewDelegateFlowLayout {
 
 // MARK: - UICollectionViewDataSource
 extension CarouselView: UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return carouselData.count
     }
@@ -104,17 +101,19 @@ extension CarouselView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CarouselCell
         let name = carouselData[indexPath.row].name
-        
-//        let rank = carouselData[indexPath.row].rank
         cell.configure(name: name)
         return cell
     }
     
     public func changePoints(player: Int, points: Int) {
         let indexPath = IndexPath.init(row: player, section: 0)
-        let cell = carouselCollectionView.cellForItem(at: indexPath) as! CarouselCell
-        cell.setPoints(points: points)
-        
+        guard let cell = carouselCollectionView.cellForItem(at: indexPath) as? CarouselCell else {
+            print(carouselData)
+            carouselData[player].points = points
+            configureView(with: carouselData)
+            return
+        }
+        cell.setPoints(points: points)        
     }
 }
 

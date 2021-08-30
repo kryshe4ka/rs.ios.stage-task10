@@ -10,10 +10,21 @@ import UIKit
 protocol NewGameViewControllerDelegate {
     func setPlayers(players: [Player])
 }
+
+struct HistoryData {
+    let player: Player?
+    let playerIndex: Int
+    let points: Int
+}
+
 class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
     
-
     var playersArray: [Player] = []
+    var history: [HistoryData] = []
+    
+    func updateHistory(data: HistoryData) {
+        history.append(data)
+    }
     
     private lazy var newGameButton: ActionButton = {
         let button = ActionButton()
@@ -50,7 +61,7 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "00:00"
         label.font = UIFont(name: "Nunito-ExtraBold", size: 28)
-        label.textColor = .white
+        label.textColor = UIColor(named: "CustomGray")
         return label
     }()
     
@@ -66,8 +77,21 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "Undo"), for: .normal)
+        button.addTarget(self, action: #selector(undo(_:)), for: .touchUpInside)
         return button
     }()
+    
+    @objc func undo(_ sender: UIButton) {
+        if history.count > 0 {
+            guard let lastAction = history.popLast() else {
+                return
+            }
+            playersArray[lastAction.playerIndex].score -= lastAction.points
+            print(lastAction.playerIndex)
+            print(playersArray[lastAction.playerIndex].score)
+            carouselView!.changePoints(player: lastAction.playerIndex, points: playersArray[lastAction.playerIndex].score)
+        }
+    }
     
 //    private lazy var miniBarLabel: UILabel = {
 //        let label = UILabel()
@@ -93,7 +117,6 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setBackgroundImage(UIImage(named: "icon_Next-2"), for: .normal)
-
         button.tintColor = UIColor(named: "CustomOrange")
         button.addTarget(self, action: #selector(previousPage(_:)), for: .touchUpInside)
         return button
@@ -193,7 +216,12 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
             guard let curentPage = carouselView?.getCurentPage() else {
                 return
             }
+            // update players score
             playersArray[curentPage].score += sender.tag
+            // create histore object to save it in the history array
+            let historyItem = HistoryData(player: playersArray[curentPage], playerIndex: curentPage, points: sender.tag)
+            updateHistory(data: historyItem)
+            
             carouselView?.changePoints(player: curentPage, points: playersArray[curentPage].score)
             carouselView?.nextPage()
             setImageForArrowsButtons()
@@ -234,8 +262,6 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
         }
     }
     
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         carouselView?.configureView(with: carouselData)
@@ -244,9 +270,7 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         newGameViewConroller.delegate = self
-        
         carouselView = CarouselView(pages: 0, delegate: self)
         guard let carouselView = carouselView else { return }
         view.addSubview(carouselView)
@@ -325,9 +349,7 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
             plusFivePointButton.widthAnchor.constraint(equalToConstant: 55.0),
             plusTenPointButton.heightAnchor.constraint(equalToConstant: 55.0),
             plusTenPointButton.widthAnchor.constraint(equalToConstant: 55.0),
-            
         ])
-        
         
         // Set up constraints for the carousel view
         carouselView.translatesAutoresizingMaskIntoConstraints = false
@@ -341,7 +363,10 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
     
     func setPlayers(players: [Player]) {
         playersArray = players
-        
+        history.removeAll()
+        for pl in players {
+            pl.score = 0
+        }
         carouselData.removeAll()
         carouselView?.setPages(pages: playersArray.count)
         
@@ -360,13 +385,13 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
             previousButton.setBackgroundImage(UIImage(named: "icon_Previous"), for: .normal)
             nextButton.setBackgroundImage(UIImage(named: "icon_Next"), for: .normal)
         }
-        
     }
-    
     @objc func newGameAction(_ sender: ActionButton) {
         present(newGameViewConroller, animated: true, completion: nil)
     }
     @objc func resultsAction(_ sender: ActionButton) {
+        resultsViewConroller.data = playersArray
+        resultsViewConroller.history = history
         present(resultsViewConroller, animated: true, completion: nil)
     }
     
@@ -396,7 +421,6 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
             Animation.shakeAnimation(on: self.diceView)
         })
         CATransaction.commit()
-        
     }
     
     @objc func closeDiceView(_ sender: UIGestureRecognizer) {
@@ -414,7 +438,6 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
 extension ProcessViewController: CarouselViewDelegate {
     func currentPageDidChange(to page: Int) {
         UIView.animate(withDuration: 0.7) {
-            
         }
     }
 }

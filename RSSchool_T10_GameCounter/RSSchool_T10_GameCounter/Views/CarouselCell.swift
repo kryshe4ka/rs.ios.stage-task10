@@ -28,7 +28,7 @@ class CarouselCell: UICollectionViewCell {
         return label
     }()
     
-    private lazy var rankLabel: UILabel = {
+    private lazy var scoreLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "Nunito-ExtraBold", size: 100)
@@ -68,16 +68,15 @@ private extension CarouselCell {
         nameLabel.centerXAnchor.constraint(equalTo: bgView.centerXAnchor).isActive = true
         nameLabel.heightAnchor.constraint(equalToConstant: 39).isActive = true
         
-        bgView.addSubview(rankLabel)
-        rankLabel.centerYAnchor.constraint(equalTo: bgView.centerYAnchor).isActive = true
-        rankLabel.centerXAnchor.constraint(equalTo: bgView.centerXAnchor).isActive = true
-        rankLabel.heightAnchor.constraint(equalToConstant: 139).isActive = true
+        bgView.addSubview(scoreLabel)
+        scoreLabel.centerYAnchor.constraint(equalTo: bgView.centerYAnchor).isActive = true
+        scoreLabel.centerXAnchor.constraint(equalTo: bgView.centerXAnchor).isActive = true
+        scoreLabel.heightAnchor.constraint(equalToConstant: 139).isActive = true
                 
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: topAnchor),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
         ])
-
     }
 }
 
@@ -85,10 +84,10 @@ private extension CarouselCell {
 extension CarouselCell {
     public func configure(name: String) {
         nameLabel.text = name
-//        rankLabel.text = "0"
+        scoreLabel.text = "0"
     }
     
     public func setPoints(points: Int) {
-        rankLabel.text = "\(points)"
+        scoreLabel.text = "\(points)"
     }
 }

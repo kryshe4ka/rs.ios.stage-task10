@@ -12,9 +12,7 @@ class Player {
     
     var name: String
     var score = 0
-    var rank = 0
-    
-    
+
     init(name: String) {
         self.name = name
     }

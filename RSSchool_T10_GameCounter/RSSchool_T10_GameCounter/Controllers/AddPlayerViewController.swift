@@ -23,6 +23,7 @@ class AddPlayerViewController: UIViewController, UITextFieldDelegate {
         let button = ActionButton()
         button.setTitle("Add", for: .normal)
         button.addTarget(self, action: #selector(addButtonAction(_:)), for: .touchUpInside)
+      //  button.isEnabled = false
         return button
     }()
     
@@ -34,12 +35,11 @@ class AddPlayerViewController: UIViewController, UITextFieldDelegate {
     
     private lazy var nameTextField: UITextField = {
         let field = UITextField()
-        field.text = "Player Name"
-        field.placeholder = "Player Name"
         field.translatesAutoresizingMaskIntoConstraints = false
         field.backgroundColor = UIColor(named: "CustomGray")
         field.font = UIFont(name: "Nunito-ExtraBold", size: 20)
         field.textColor = UIColor(named: "PlayerNameColor")
+        field.attributedPlaceholder = NSAttributedString(string: "Player Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "PlayerNameColor")!])
         return field
     }()
     
@@ -53,6 +53,12 @@ class AddPlayerViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(backButton)
         view.addSubview(addButton)
         view.addSubview(titleLabel)
+        
+//        if (nameTextField.text!.isEmpty) {
+//            addButton.isEnabled = false
+//        } else {
+//            addButton.isEnabled = true
+//        }
         
         let subview = UIView()
         subview.backgroundColor = UIColor(named: "CustomGray")
@@ -76,7 +82,7 @@ class AddPlayerViewController: UIViewController, UITextFieldDelegate {
             subview.heightAnchor.constraint(equalToConstant: 65.0),
             
             nameTextField.centerYAnchor.constraint(equalTo: subview.centerYAnchor),
-            nameTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 14),
+            nameTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             nameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             nameTextField.heightAnchor.constraint(equalToConstant: 42.0),
         ])
@@ -92,15 +98,21 @@ class AddPlayerViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func addButtonAction(_ sender: ActionButton) {
-        delegate?.setName(nameTextField.text!)
         
-        UIView.animate(withDuration: 0.25) { [self] in
-            view.frame = CGRect(x: view.bounds.size.width, y: 0, width: view.bounds.size.width, height: 0)
-        } completion: { _ in
-            self.willMove(toParent: nil)
-            self.view.removeFromSuperview()
-            self.removeFromParent()
+        if nameTextField.text! == "" {
+            print("empty")
+        } else {
+            delegate?.setName(nameTextField.text!)
+            
+            UIView.animate(withDuration: 0.25) { [self] in
+                view.frame = CGRect(x: view.bounds.size.width, y: 0, width: view.bounds.size.width, height: 0)
+            } completion: { _ in
+                self.willMove(toParent: nil)
+                self.view.removeFromSuperview()
+                self.removeFromParent()
+            }
         }
-    }
+        
 
+    }
 }
