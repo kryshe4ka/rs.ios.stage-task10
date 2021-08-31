@@ -441,6 +441,7 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
     @objc func resultsAction(_ sender: ActionButton) {
         resultsViewConroller.data = playersArray
         resultsViewConroller.history = history
+        resultsViewConroller.delegate = self
         present(resultsViewConroller, animated: true, completion: nil)
     }
     

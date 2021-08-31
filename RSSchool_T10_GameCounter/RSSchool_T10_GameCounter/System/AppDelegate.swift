@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // UserDefaults
         let defaults = UserDefaults.standard
         if !defaults.bool(forKey: "NotFirstStart") {
-            print("first luanch")
             window?.rootViewController!.present(NewGameViewController(), animated: true, completion: nil)
         }
         defaults.setValue(true, forKey: "NotFirstStart")

@@ -53,8 +53,6 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
     }()
     
     var delegate: NewGameViewControllerDelegate?
-//    var delegate: UIViewController?
-
     var playersArray: [Player] = []
     var heightConstraint = NSLayoutConstraint()
     
@@ -66,6 +64,12 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.addSubview(tableView)
         view.addSubview(startButton)
         
+        let defaults = UserDefaults.standard
+        if defaults.bool(forKey: "NotFirstStart") {
+            cancelButton.isHidden = false
+        } else {
+            cancelButton.isHidden = true
+        }
         // This view controller itself will provide the delegate methods and row data for the table view
         tableView.delegate = self
         tableView.dataSource = self
@@ -181,16 +185,24 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     @objc func startGame(_ sender: UIButton) {
         if playersArray.count != 0 {
-            
-            delegate = self.presentingViewController as? NewGameViewControllerDelegate
-            
-            delegate?.setPlayers(players: playersArray)
-            delegate?.clearTimer()
-            delegate?.startTimer()
+            if let delegate = self.presentingViewController as? NewGameViewControllerDelegate {
+                delegate.setPlayers(players: playersArray)
+                delegate.clearTimer()
+                delegate.startTimer()
+            } else {
+                if let delegate = self.presentingViewController?.presentingViewController as? NewGameViewControllerDelegate {
+                    delegate.setPlayers(players: playersArray)
+                    delegate.clearTimer()
+                    delegate.startTimer()
+                }
+            }
             self.dismiss(animated: true, completion: nil)
         } else {
             // unactive button
         }
+        
+        self.dismiss(animated: true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
         
     }
     

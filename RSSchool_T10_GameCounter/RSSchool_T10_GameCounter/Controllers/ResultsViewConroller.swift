@@ -12,6 +12,8 @@ class ResultsViewConroller: UIViewController {
     var data: [Player] = []
     var history: [HistoryData] = []
     
+    var delegate: NewGameViewControllerDelegate?
+    
     private lazy var turnsView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -68,9 +70,6 @@ class ResultsViewConroller: UIViewController {
         button.setTitle("New Game", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(newGameAction(_:)), for: .touchUpInside)
-        // при таком создании новой игры реальный результат не соотвестствует желаемому, поэтому кнопка не активна
-        button.isEnabled = false
-        button.alpha = 0.1
         return button
     }()
     
@@ -251,7 +250,9 @@ class ResultsViewConroller: UIViewController {
     }
     
     @objc func newGameAction(_ sender: ActionButton) {
-        present(newGameViewConroller, animated: true, completion: nil)
+        let vc = NewGameViewController()
+        vc.delegate = self.delegate
+        present(vc, animated: true, completion: nil)
     }
 
 }
