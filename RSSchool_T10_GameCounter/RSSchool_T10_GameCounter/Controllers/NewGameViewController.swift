@@ -53,6 +53,8 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
     }()
     
     var delegate: NewGameViewControllerDelegate?
+//    var delegate: UIViewController?
+
     var playersArray: [Player] = []
     var heightConstraint = NSLayoutConstraint()
     
@@ -179,6 +181,9 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     @objc func startGame(_ sender: UIButton) {
         if playersArray.count != 0 {
+            
+            delegate = self.presentingViewController as? NewGameViewControllerDelegate
+            
             delegate?.setPlayers(players: playersArray)
             delegate?.clearTimer()
             delegate?.startTimer()

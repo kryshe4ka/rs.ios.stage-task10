@@ -122,9 +122,7 @@ class ResultsViewConroller: UIViewController {
         ])
         scrollView.addSubview(resultsStackView)
         turnsView.addSubview(turnsLabel)
-//        turnsView.addSubview(turnsStackView)
         scrollView.addSubview(turnsView)
-        // ! заменила
         scrollView.addSubview(turnsStackView)
 
         heightConstraint = NSLayoutConstraint(item: resultsStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 0)
@@ -135,7 +133,6 @@ class ResultsViewConroller: UIViewController {
             resultsStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             resultsStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 18),
             resultsStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-           // heightConstraint
         ])
         // constrain the turns view
         NSLayoutConstraint.activate([
@@ -155,7 +152,7 @@ class ResultsViewConroller: UIViewController {
             turnsStackView.leadingAnchor.constraint(equalTo: turnsView.leadingAnchor),
             turnsStackView.topAnchor.constraint(equalTo: turnsLabel.bottomAnchor, constant: 17),
             turnsStackView.trailingAnchor.constraint(equalTo: turnsView.trailingAnchor),
-            heightConstraint2
+            heightConstraint2,
         ])
     }
     
@@ -231,7 +228,6 @@ class ResultsViewConroller: UIViewController {
                 turnsPointLabel.trailingAnchor.constraint(equalTo: turnsStackView.trailingAnchor, constant: -15),
                 turnsLabel.centerYAnchor.constraint(equalTo: turnsItemView.centerYAnchor),
                 turnsPointLabel.centerYAnchor.constraint(equalTo: turnsItemView.centerYAnchor),
-
             ])
         }
         

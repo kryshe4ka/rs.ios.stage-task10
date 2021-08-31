@@ -149,15 +149,6 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
         }
     }
     
-//    private lazy var miniBarLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.text = "K J B"
-//        label.font = UIFont(name: "Nunito-ExtraBold", size: 20)
-//        label.textColor = UIColor(named: "CustomGray")
-//        return label
-//    }()
-    
     private lazy var plusOnePointButton: PointButton = {
         let button = PointButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -307,8 +298,6 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
                 previousButton.setBackgroundImage(UIImage(named: "icon_Next-2"), for: .normal)
             }
         }
-        
-        
     }
     
     @objc func previousPage(_ sender: UIButton) {
@@ -326,6 +315,7 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         newGameViewConroller.delegate = self
         carouselView = CarouselView(pages: 0, delegate: self)
         guard let carouselView = carouselView else { return }
@@ -377,9 +367,6 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
             undoButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
             undoButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40.0),
             
-//            miniBarLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            miniBarLabel.centerYAnchor.constraint(equalTo: undoButton.centerYAnchor),
-            
             plusOnePointButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -131.0),
             plusOnePointButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             plusOnePointButton.heightAnchor.constraint(equalToConstant: 90.0),
@@ -420,6 +407,16 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
         carouselView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
         configureArrowsButtons()
+        
+//        // UserDefaults
+//        let defaults = UserDefaults.standard
+//        if !defaults.bool(forKey: "NotFirstStart") {
+//            print("first luanch")
+//            newGameViewConroller = NewGameViewController()
+//            presentingViewController?.present(newGameViewConroller, animated: true, completion: nil)
+//        }
+//        defaults.setValue(true, forKey: "NotFirstStart")
+        
     }
     
     func setPlayers(players: [Player]) {
