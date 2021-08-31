@@ -180,6 +180,8 @@ class NewGameViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func startGame(_ sender: UIButton) {
         if playersArray.count != 0 {
             delegate?.setPlayers(players: playersArray)
+            delegate?.clearTimer()
+            delegate?.startTimer()
             self.dismiss(animated: true, completion: nil)
         } else {
             // unactive button

@@ -9,6 +9,8 @@ import UIKit
 
 protocol NewGameViewControllerDelegate {
     func setPlayers(players: [Player])
+    func startTimer()
+    func clearTimer()
 }
 
 struct HistoryData {
@@ -22,8 +24,54 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
     var playersArray: [Player] = []
     var history: [HistoryData] = []
     
-    func updateHistory(data: HistoryData) {
-        history.append(data)
+    private var isGameActive = false
+    private var gameTimer: Timer?
+    private var gameTimePassed: Int = 0
+    
+    func clearTimer() {
+        gameTimePassed = 0
+    }
+    @objc func startTimer() {
+        // before start new timer stop the last timer
+        gameTimer?.invalidate()
+        // create timer
+        gameTimer = Timer.scheduledTimer(timeInterval: 1,
+                                         target: self,
+                                         selector: #selector(updateTimer(_:)),
+                                         userInfo: nil,
+                                         repeats: true
+        )
+        isGameActive = true
+        updateUI()
+    }
+    
+    private func updateUI() {
+        // if game ia active hide start button and show pause button
+        timerPlayButton.isHidden = isGameActive
+        timerPauseButton.isHidden = !isGameActive
+        
+        let minutes = (gameTimePassed / 60) < 10 ? "0\(gameTimePassed / 60)" : "\(gameTimePassed / 60)"
+        
+        let seconds = (gameTimePassed - 60 * (gameTimePassed / 60)) < 10 ? "0\(gameTimePassed - 60 * (gameTimePassed / 60))" : "\(gameTimePassed - 60 * (gameTimePassed / 60))"
+        if isGameActive {
+            timerLabel.text = "\(minutes):\(seconds)"
+            timerLabel.textColor = .white
+        } else {
+            timerLabel.text = "\(minutes):\(seconds)"
+            timerLabel.textColor = UIColor(named: "CustomGray")
+        }
+    }
+    
+    @objc func updateTimer(_ sender: Timer) {
+        gameTimePassed += 1
+        updateUI()
+    }
+    
+    @objc private func stopGame() {
+        isGameActive = false
+        updateUI()
+        // stop timer
+        gameTimer?.invalidate()
     }
     
     private lazy var newGameButton: ActionButton = {
@@ -65,11 +113,19 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
         return label
     }()
     
-    private lazy var timerButton: UIButton = {
+    private lazy var timerPlayButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "Play"), for: .normal)
-//        button.setImage(UIImage(named: "Pause"), for: .normal)
+        button.addTarget(self, action: #selector(startTimer), for: .touchUpInside)
+        return button
+    }()
+    private lazy var timerPauseButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "Pause"), for: .normal)
+        button.isHidden = true
+        button.addTarget(self, action: #selector(stopGame), for: .touchUpInside)
         return button
     }()
     
@@ -281,7 +337,7 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
             pointsStackView.addArrangedSubview(itemButton)
         }
         
-        let viewsArray = [newGameButton, resultsButton, titleLabel, diceButton, timerLabel, timerButton, undoButton, plusOnePointButton, previousButton, nextButton, pointsStackView, pointsStackView]
+        let viewsArray = [newGameButton, resultsButton, titleLabel, diceButton, timerLabel,timerPlayButton, timerPauseButton, undoButton, plusOnePointButton, previousButton, nextButton, pointsStackView, pointsStackView]
         for itemView in viewsArray {
             view.addSubview(itemView)
         }
@@ -308,10 +364,15 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
             timerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
             timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            timerButton.leadingAnchor.constraint(equalTo: timerLabel.trailingAnchor, constant: 20.0),
-            timerButton.heightAnchor.constraint(equalToConstant: 21.0),
-            timerButton.widthAnchor.constraint(equalToConstant: 16.0),
-            timerButton.centerYAnchor.constraint(equalTo: timerLabel.centerYAnchor),
+            timerPlayButton.leadingAnchor.constraint(equalTo: timerLabel.trailingAnchor, constant: 20.0),
+            timerPlayButton.heightAnchor.constraint(equalToConstant: 21.0),
+            timerPlayButton.widthAnchor.constraint(equalToConstant: 16.0),
+            timerPlayButton.centerYAnchor.constraint(equalTo: timerLabel.centerYAnchor),
+            
+            timerPauseButton.leadingAnchor.constraint(equalTo: timerLabel.trailingAnchor, constant: 20.0),
+            timerPauseButton.heightAnchor.constraint(equalToConstant: 21.0),
+            timerPauseButton.widthAnchor.constraint(equalToConstant: 16.0),
+            timerPauseButton.centerYAnchor.constraint(equalTo: timerLabel.centerYAnchor),
             
             undoButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
             undoButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40.0),
@@ -430,6 +491,9 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
             }
         }
         diceView.removeFromSuperview()
+    }
+    func updateHistory(data: HistoryData) {
+        history.append(data)
     }
 }
 

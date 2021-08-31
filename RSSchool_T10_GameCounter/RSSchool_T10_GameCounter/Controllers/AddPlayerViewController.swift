@@ -11,7 +11,7 @@ protocol AddPlayerViewControllerDelegate {
     func  setName(_ name: String)
 }
 
-class AddPlayerViewController: UIViewController, UITextFieldDelegate {
+class AddPlayerViewController: UIViewController {
     private lazy var backButton: ActionButton = {
         let button = ActionButton()
         button.setTitle("Back", for: .normal)
@@ -23,7 +23,6 @@ class AddPlayerViewController: UIViewController, UITextFieldDelegate {
         let button = ActionButton()
         button.setTitle("Add", for: .normal)
         button.addTarget(self, action: #selector(addButtonAction(_:)), for: .touchUpInside)
-      //  button.isEnabled = false
         return button
     }()
     
@@ -40,6 +39,7 @@ class AddPlayerViewController: UIViewController, UITextFieldDelegate {
         field.font = UIFont(name: "Nunito-ExtraBold", size: 20)
         field.textColor = UIColor(named: "PlayerNameColor")
         field.attributedPlaceholder = NSAttributedString(string: "Player Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "PlayerNameColor")!])
+        field.becomeFirstResponder()
         return field
     }()
     
@@ -53,13 +53,7 @@ class AddPlayerViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(backButton)
         view.addSubview(addButton)
         view.addSubview(titleLabel)
-        
-//        if (nameTextField.text!.isEmpty) {
-//            addButton.isEnabled = false
-//        } else {
-//            addButton.isEnabled = true
-//        }
-        
+                
         let subview = UIView()
         subview.backgroundColor = UIColor(named: "CustomGray")
         subview.translatesAutoresizingMaskIntoConstraints = false
@@ -100,10 +94,9 @@ class AddPlayerViewController: UIViewController, UITextFieldDelegate {
     @objc func addButtonAction(_ sender: ActionButton) {
         
         if nameTextField.text! == "" {
-            print("empty")
+            // do nothing
         } else {
-            delegate?.setName(nameTextField.text!)
-            
+            delegate?.setName(nameTextField.text!)            
             UIView.animate(withDuration: 0.25) { [self] in
                 view.frame = CGRect(x: view.bounds.size.width, y: 0, width: view.bounds.size.width, height: 0)
             } completion: { _ in
@@ -112,7 +105,5 @@ class AddPlayerViewController: UIViewController, UITextFieldDelegate {
                 self.removeFromParent()
             }
         }
-        
-
     }
 }
