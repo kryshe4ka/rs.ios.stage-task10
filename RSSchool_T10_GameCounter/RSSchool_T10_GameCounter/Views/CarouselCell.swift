@@ -61,7 +61,7 @@ private extension CarouselCell {
         bgView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         bgView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
         bgView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        bgView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        bgView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.37).isActive = true
 
         bgView.addSubview(nameLabel)
         nameLabel.topAnchor.constraint(equalTo: bgView.topAnchor, constant: 23).isActive = true

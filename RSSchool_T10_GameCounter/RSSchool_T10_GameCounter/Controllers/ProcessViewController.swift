@@ -401,21 +401,12 @@ class ProcessViewController: UIViewController, NewGameViewControllerDelegate {
         
         // Set up constraints for the carousel view
         carouselView.translatesAutoresizingMaskIntoConstraints = false
-        carouselView.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 42).isActive = true
+        carouselView.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 32).isActive = true
         carouselView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         carouselView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         carouselView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
         configureArrowsButtons()
-        
-//        // UserDefaults
-//        let defaults = UserDefaults.standard
-//        if !defaults.bool(forKey: "NotFirstStart") {
-//            print("first luanch")
-//            newGameViewConroller = NewGameViewController()
-//            presentingViewController?.present(newGameViewConroller, animated: true, completion: nil)
-//        }
-//        defaults.setValue(true, forKey: "NotFirstStart")
         
     }
     

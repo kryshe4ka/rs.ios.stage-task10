@@ -61,10 +61,10 @@ class CarouselView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func setupCollectionView() {
-        let cellPadding = (frame.width - 300) / 2
+        let cellPadding = (frame.width - UIScreen.main.bounds.height * 0.37) / 2
         let carouselLayout = UICollectionViewFlowLayout()
         carouselLayout.scrollDirection = .horizontal
-        carouselLayout.itemSize = .init(width: 255, height: 300)
+        carouselLayout.itemSize = .init(width: 255, height: UIScreen.main.bounds.height * 0.37)
         carouselLayout.sectionInset = .init(top: 0, left: cellPadding, bottom: 0, right: cellPadding)
         carouselLayout.minimumLineSpacing = cellPadding * 2
         carouselCollectionView.collectionViewLayout = carouselLayout
@@ -74,7 +74,7 @@ class CarouselView: UIView, UICollectionViewDelegateFlowLayout {
         carouselCollectionView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         carouselCollectionView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         carouselCollectionView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        carouselCollectionView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        carouselCollectionView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.37).isActive = true
     }
         
     func setupPageControl() {
@@ -139,7 +139,7 @@ extension CarouselView {
         let cellPadding = (frame.width - 255) / 2
         let carouselLayout = UICollectionViewFlowLayout()
         carouselLayout.scrollDirection = .horizontal
-        carouselLayout.itemSize = .init(width: 255, height: 300)
+        carouselLayout.itemSize = .init(width: 255, height: UIScreen.main.bounds.height * 0.37)
         carouselLayout.sectionInset = .init(top: 0, left: cellPadding, bottom: 0, right: cellPadding)
         carouselLayout.minimumLineSpacing = cellPadding * 2
         carouselCollectionView.collectionViewLayout = carouselLayout
